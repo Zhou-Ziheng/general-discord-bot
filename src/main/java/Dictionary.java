@@ -1,26 +1,18 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 class Dictionary{
     public static ArrayList<String> getDefinition(String word) throws IOException, InterruptedException {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://mashape-community-urban-dictionary.p.rapidapi.com/define?term="+word.replaceAll(" ", "%20")))
-                    .header("x-rapidapi-key", "fd11afc393mshb11e70a92cab04cp169092jsn22a890c14fff")
-                    .header("x-rapidapi-host","mashape-community-urban-dictionary.p.rapidapi.com")
+                    .uri(URI.create("https://api.urbandictionary.com/v0/define?term="+word.replaceAll(" ", "%20")))
                     .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -28,6 +20,7 @@ class Dictionary{
             return(parse(responseBody));
 
         }catch(Exception e){
+            e.printStackTrace();
             return null;
         }
     }

@@ -39,7 +39,8 @@ public class Hangman {
             case 1:
                 if (guessedCharacters.contains(message.charAt(0))) {
                     messageToReturn = "You have already guessed this letter";
-                } else {
+                }
+                else {
                     guessedCharacters.add(message.charAt(0));
                     if (!currentWord.contains(message)) {
                         messageToReturn = "No! " + message.charAt(0) + " is not in the word!";

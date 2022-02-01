@@ -2,6 +2,9 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import music.GuildMusicManager;
+import music.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -18,10 +21,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.BlockingQueue;
 
 public class Server {
     public JDA jda;
@@ -31,13 +37,16 @@ public class Server {
     public String fileName;
     public CSVReader in;
     public Guild guild;
+    public AudioManager manager;
     private int count = 0;
+    private String command = "~";
     public Color[] colors = new Color[]{Color.magenta, Color.black, Color.red, Color.pink, Color.cyan, Color.gray, Color.green, Color.lightGray, Color.yellow, Color.orange, Color.white, Color.blue};
-    public boolean WhootingNotDisabled = true;
     public Server(String id, JDA jda) throws IOException, CsvValidationException {
         fileName = System.getProperty("user.dir")+ File.separator + "ServerData" + File.separator + id+".csv";
         this.jda = jda;
         guild = jda.getGuildById(id);
+        manager = guild.getAudioManager();
+        System.out.println("``"+guild+"``");
         File file = new File(fileName);
         file.createNewFile();
         inputInformationFromDataCSV();
@@ -70,19 +79,19 @@ public class Server {
             }
         }
         String msg = event.getMessage().getContentRaw();
-        if (msg.toLowerCase().contains("!hangman")){
+        if (msg.toLowerCase().contains(command+"hangman")){
             handleHangman(event);
         }
         if (event.getAuthor().getName().equals("Yoyocube")&&msg.toLowerCase().contains("stupid")&& msg.toLowerCase().contains("bot")){
             event.getChannel().sendMessage("no u").queue();
         }
-        if (msg.toLowerCase().contains("!penis")){
+        if (msg.toLowerCase().contains(command+"penis")){
             handlePenis(event);
         }
-        if (msg.contains("!define")){
+        if (msg.contains(command+"define")){
             handleDefinition(msg, event);
         }
-        if (msg.toLowerCase().contains ("!get avatar")){
+        if (msg.toLowerCase().contains (command+"avatar")){
             if (event.getMessage().getMentionedUsers().size()!=0){
                 String image = event.getMessage().getMentionedUsers().get(0).getAvatarUrl();
                 event.getChannel().sendMessage(image).queue();
@@ -92,72 +101,74 @@ public class Server {
                 event.getChannel().sendMessage(image).queue();
             }
         }
-        if (event.getAuthor().getName().equals("Yoyocube")){
-            System.out.println("asad");
+        if (msg.contains(command+"help")){
+            event.getChannel().sendMessage("define \nhangman \nracistness \ngayness \nswearcount \ngender \ngender set `String`\n" +
+                    //command+"set penis size `String` `String` \n!penis size \n" +
+                    "profile").queue();
         }
-        if (msg.toLowerCase().contains("^^ this s os much this")){
-            try {
-                event.getMessage().delete().queue();
-            }
-            catch(InsufficientPermissionException e){
-
-            }
-            event.getChannel().sendMessage("^^ This s os much this").queue();
-        }
-        if (msg.toLowerCase().contains("!killinsquotes")){
-            event.getChannel().sendMessage("1. It's not a trick question, you just had to recognize there is a trick. \n2. I'm not out to get you. \n" +
-                    "3. I know marks are important to you guys.").queue();
-        }
-        if (msg.contains("!disableWhooting")){
-            WhootingNotDisabled = false;
-        }
-        else if (msg.contains("!enableWhooting")){
-            WhootingNotDisabled = true;
-        }
-        if (msg.contains("!getHelp")){
-            event.getChannel().sendMessage("!define \n!racistness \n!gayness \n!swearcount \n!gender \n!set gender `String`\n!set penis size `String` `String` \n!penis size \n!profile\n!disableWhooting\n!enableWhooting").queue();
-        }
-        if (msg.contains("!racistness")||RacistChecker.checkForRacism(msg)){
+        if (msg.contains(command+"racistness")||RacistChecker.checkForRacism(msg)){
             handleRacist(msg, event);
         }
-        if (msg.contains("!gayness")||GayChecker.checkForGayness(msg)){
+        if (msg.contains(command+"gayness")||GayChecker.checkForGayness(msg)){
+            System.out.println(234);
             handleGayness(msg, event);
         }
-        if (msg.contains("!swearcount")||(SwearWordChecker.checkForSwearWord(msg)!=0)){
+        if (msg.contains(command+"swearcount")||(SwearWordChecker.checkForSwearWord(msg)!=0)){
             handleSwearWord(msg, event);
         }
-
-        if (msg.contains("!set gender")||msg.contains("!gender")){
+        if (msg.contains(command+"gender")||msg.contains(command+"gender")){
             handleGender(msg, event);
         }
-        if (msg.toLowerCase().contains("!set penis size")||msg.contains("!penis size")){
+        if (msg.toLowerCase().contains(command+"penis set")||msg.contains(command+"penis")){
             handlePenisSize(msg, event);
         }
-        if (msg.contains("!profile")) {
+        if (msg.contains(command+"profile")) {
             handleProfile(event);
         }
-        if (msg.contains("!")&&(msg.charAt(0)!='!')&&event.getMessage().getMentionedMembers().size()==0){
-            handleCheer(event);
-        }
+        //if (msg.contains(command+"")&&(msg.charAt(0)!='!')&&event.getMessage().getMentionedMembers().size()==0){
+        //    handleCheer(event);
+        //}
         handleEmotes(msg, event);
-        if (msg.contains("!say nigger")){
-            Guild guild = event.getGuild();
-            // This will get the first voice channel with the name "music"
-            // matching by voiceChannel.getName().equalsIgnoreCase("music")
-            VoiceChannel channel = event.getMember().getVoiceState().getChannel();
-            AudioManager manager = guild.getAudioManager();
-
-            // MySendHandler should be your AudioSendHandler implementation
-            //manager.setSendingHandler(new MySendHandler());
-            // Here we finally connect to the target voice channel
-            // and it will automatically start pulling the audio from the MySendHandler instance
-            manager.openAudioConnection(channel);
+        if (msg.contains(command+"p ")){
+            handlePlayMusic(msg, event);
+        }
+        if (msg.contains(command+"play")){
+            handlePlayMusic(msg, event);
+        }
+        if (msg.contains(command+"stop")){
+            handleStopMusic(msg,event);
+        }
+        if (msg.equalsIgnoreCase(command+"skip")){
+            handleSkipMusic(msg,event);
+        }
+        if (msg.equalsIgnoreCase(command+"queue")||msg.equalsIgnoreCase(command+"q")){
+            handleQueueMusic(msg,event);
+        }
+        if (msg.equalsIgnoreCase(command+"dc")){
+            System.out.println("here");
+            handleStopMusic(msg,event);
+            this.manager.closeAudioConnection();
+        }
+        if (msg.equalsIgnoreCase(command+"pause")){
+            System.out.println("here");
+            handlePauseMusic(msg,event);
+        }if (msg.equalsIgnoreCase(command+"start")){
+            System.out.println("here");
+            handleStartMusic(msg,event);
         }
 
     }
+    public boolean isUrl(String url){
+        if (url.contains("/")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     public void handleHangman(MessageReceivedEvent evt){
         Member member = evt.getMember();
-        if (!hangmanHashMap.containsKey(member)||evt.getMessage().equals("!new game")){
+        if (!hangmanHashMap.containsKey(member)||evt.getMessage().equals(command+"new game")){
             evt.getChannel().sendMessage("New game created!").queue();
             evt.getChannel().sendMessage("Commands:\n!hangman ` ` - guess a letter\n!hangman `word` - guess a word\n!hangman reveal - reveal answer").queue();
             hangmanHashMap.put(member, new Hangman());
@@ -232,7 +243,7 @@ public class Server {
     }
 
     public void handleRacist(String msg, MessageReceivedEvent event){
-        if (msg.contains("!")&& msg.contains("racistness")){
+        if (msg.contains(command)&& msg.contains("racistness")){
             if (event.getMessage().getMentionedUsers().size() == 0){
                 event.getChannel().sendMessage("Your current racistness is: " + getUserInfo(event).getRacistness()).queue();
             }else{
@@ -260,7 +271,7 @@ public class Server {
 
             event.getChannel().sendMessage("0! = 1").queue();
         }
-        else if (WhootingNotDisabled){
+        else{
             MessageBuilder msg = new MessageBuilder("Whoot whoot!");
             msg.setTTS(true);
             event.getChannel().sendMessage(msg.build()).queue();
@@ -268,7 +279,8 @@ public class Server {
     }
 
     public void handleGayness(String msg, MessageReceivedEvent event){
-        if (msg.contains("!")&& msg.contains("gayness")) {
+        if (msg.contains(command)&& msg.contains("gayness")) {
+            System.out.println(event.getMessage().getMentionedUsers().size());
             if (event.getMessage().getMentionedUsers().size() == 0){
                 event.getChannel().sendMessage("Your current gayness is: " + getUserInfo(event).getGayness()).queue();
             }else{
@@ -292,7 +304,7 @@ public class Server {
     }
 
     public void handleSwearWord(String msg, MessageReceivedEvent event){
-        if (msg.contains("!")&& msg.replace(" ", "").contains("swearcount")) {
+        if (msg.contains(command)&& msg.replace(" ", "").contains("swearcount")) {
             if (event.getMessage().getMentionedUsers().size() == 0){
                 event.getChannel().sendMessage("Your current swear count is: " + getUserInfo(event).getSwearCount()).queue();
             }else{
@@ -315,14 +327,14 @@ public class Server {
     }
 
     public void handleGender(String msg, MessageReceivedEvent event){
-        if (msg.toLowerCase().contains("!set gender")) {
+        if (msg.toLowerCase().contains(command+"gender set")) {
             try {
                 updateGender(msg.substring(12), event);
                 event.getChannel().sendMessage("Your gender is now " + getUserInfo(event).getGender()).queue();
             } catch (IOException | CsvException e) {
                 e.printStackTrace();
             }
-        }else if(msg.contains("!gender")){
+        }else if(msg.contains(command+"gender")){
             if (event.getMessage().getMentionedUsers().size() == 0){
                 event.getChannel().sendMessage("Your gender is " + getUserInfo(event).getGender()).queue();
             }else{
@@ -339,14 +351,14 @@ public class Server {
     }
 
     public void handlePenisSize(String msg, MessageReceivedEvent event){
-        if (msg.toLowerCase().contains("!set penis size")) {
+        if (msg.toLowerCase().contains(command+"penis set")) {
             try {
-                updatePenisSize(msg.substring(16), event);
+                updatePenisSize(msg.substring(11), event);
                 event.getChannel().sendMessage("Your penis size is(length, diameter): (" + getUserInfo(event).getPenisSize()[0]+", "+getUserInfo(event).getPenisSize()[1]+")").queue();
             } catch (IOException | CsvException e) {
                 e.printStackTrace();
             }
-        }else if(msg.contains("!penis size")){
+        }else if(msg.contains(command+"penis")){
             if (event.getMessage().getMentionedUsers().size() == 0){
                 event.getChannel().sendMessage("Your penis size is(length, diameter): (" + getUserInfo(event).getPenisSize()[0]+", "+getUserInfo(event).getPenisSize()[1]+")").queue();
             }else{
@@ -408,7 +420,68 @@ public class Server {
         }
     }
 
+    public void handlePlayMusic(String msg, MessageReceivedEvent event){
+        VoiceChannel vChannel = event.getMember().getVoiceState().getChannel();
+        if (vChannel != null) {
+            manager.openAudioConnection(vChannel);
+            int indexOfSpace = msg.indexOf(" ");
+            String url = msg.substring(indexOfSpace+1);
+            if (!isUrl(url)) {
+                url = "ytsearch:" + url;
 
+            }
+            System.out.println(url);
+            PlayerManager.getInstance()
+                    .loadAndPlay(event.getTextChannel(), url);
+        }
+        else{
+            event.getChannel().sendMessage("Please join a voice channel! ").queue();
+        }
+        handleStartMusic(msg,event);
+    }
+    public void handleStopMusic(String msg, MessageReceivedEvent event){
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        musicManager.scheduler.player.stopTrack();
+        musicManager.scheduler.queue.clear();
+
+
+    }
+    public void handleSkipMusic(String msg, MessageReceivedEvent event){
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        musicManager.scheduler.nextTrack();
+
+    }
+    public void handlePauseMusic(String msg, MessageReceivedEvent event){
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        musicManager.scheduler.onPause();
+
+    }
+    public void handleStartMusic(String msg, MessageReceivedEvent event){
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+        musicManager.scheduler.onStart();
+
+    }
+    public void handleQueueMusic(String msg, MessageReceivedEvent event){
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
+
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(colors[(int)(Math.random()*colors.length)]);
+        eb.setTitle ("Queue");
+
+        AudioTrack currentTrack = musicManager.audioPlayer.getPlayingTrack();
+        eb.addField("Currently Playing:", currentTrack.getInfo().title+ " by "+currentTrack.getInfo().author, false);
+
+        final BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
+
+
+        int i = -1;
+        for (AudioTrack track: queue){
+            i++;
+            System.out.println(track);
+            eb.addField((i + 1) + ". ", track.getInfo().title+ " by "+track.getInfo().author, false);
+        }
+        event.getChannel().sendMessage(eb.build()).queue();
+    }
 
     public UserInfo getUserInfo(MessageReceivedEvent event){
         return userInfoArrayList.get(userInfoMap.get(event.getAuthor().getId()));
@@ -546,4 +619,5 @@ public class Server {
     public String getGuildId() {
         return guild.getId();
     }
+
 }

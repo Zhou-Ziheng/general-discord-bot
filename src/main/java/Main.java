@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.sql.*;
 import java.util.*;
 
 import javax.security.auth.login.LoginException;
@@ -30,8 +31,17 @@ public class Main extends ListenerAdapter{
     static CSVReader in;//CSV file reader declaration
     static int count = 0;//Keeps a count everytime a server added
     static boolean importServerList = false;//Allows the program to import data when executed
+    static Connection conn;
 
     public static void main(String[] Args) throws LoginException, IOException, CsvValidationException {
+        //String jdbcUrl = "jdbc:sqlite:/C:\\Users\\Sparky Fnay\\Desktop\\DisBot - Copy\\servers.db";
+
+        //try {
+        //    conn = DriverManager.getConnection(jdbcUrl);
+        //} catch (SQLException e) {
+        //    e.printStackTrace();
+        //}
+
         jda = JDABuilder.createDefault("Nzk5MTA4MjM2MzI1MTU4OTQy.X_-xig.gO6R0Ph6kieh7WAIkhI9I14i_EQ")
                 .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
                 .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
@@ -51,23 +61,36 @@ public class Main extends ListenerAdapter{
       4: gender*/
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        if (!importServerList){//if server is not imported, import server
+       /* if (!importServerList){//if server is not imported, import server
             try {
                 inputInformationFromDataCSV(event);
-            } catch (CsvValidationException | IOException e) {
+            } catch (IOException | CsvException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         if (event.getAuthor().isBot()) {//if the message received is a bot, then return;
             return;
         }
-        if (!ServerMap.containsKey(event.getGuild().getId())){//checks of the server of the message is already in the list
+
+       // String sql = "CREATE TABLE IF NOT EXISTS "+event.getGuild().getId()+" (id varchar(20),gayness varchar(3),racistness varchar(3),swearcount varchar(3),gender varchar(100), penissize  varchar(100) )";
+
+        //Statement statement = null;
+        //try {
+        //    statement = conn.createStatement();
+        //    statement.executeQuery(sql);
+        //} catch (SQLException throwables) {
+        //    throwables.printStackTrace();
+        //}
+        if (!ServerMap.containsKey(event.getGuild().getId())){
             try {
-                newServer(event);//if not, then add the server
-            } catch (IOException | CsvValidationException e) {
+                newServer(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CsvValidationException e) {
                 e.printStackTrace();
             }
         }
+         
         getServer(event).onMessageReceived(event);//Forwards the message to the correct server obj to be processed
 
     }
@@ -77,22 +100,7 @@ public class Main extends ListenerAdapter{
     }
 
 
-    public static void inputInformationFromDataCSV(MessageReceivedEvent event) throws CsvValidationException, IOException {
-        //reads the data from an .csv file when the program is executed
-        in = new CSVReader(new FileReader(fileName));//opens the csv file
-        String [] data = in.readNext();//reads a line and parse into a String array by ','
-        while (data!=null){//if the line contains data
-            //add data to lists, arrays, and maps
-            //count is the index of each server and it matches between the three lists
-            ServerMap.put(data[0], count);
-            ServerMapReverse.put(count, data[0]);
-            ServerArrayList.add(new Server(data[0], jda));//instantiate a new server obj using the id
-            data = in.readNext();
-            count++;
-        }
-        in.close();
-        importServerList = true;
-    }
+
 
 
     public static void newServer(MessageReceivedEvent event) throws IOException, CsvValidationException {
@@ -102,14 +110,7 @@ public class Main extends ListenerAdapter{
 
         ServerArrayList.add(new Server(event.getGuild().getId(), jda));
 
-        String csv = fileName;
-        CSVWriter writer = new CSVWriter(new FileWriter(csv, true));
 
-        String [] record = (event.getGuild().getId()+","+event.getGuild().getName()).split(",");
-
-        writer.writeNext(record);
-
-        writer.close();
         count++;
     }
 
