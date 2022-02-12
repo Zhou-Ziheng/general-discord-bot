@@ -1,47 +1,41 @@
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import com.opencsv.CSVWriter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
+import java.net.URI;
+
 import java.io.*;
-import java.sql.*;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.*;
 
 import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter{
+    static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
     static JDA jda; //global variable jda
     static HashMap<String, Integer> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
     static ArrayList<Server> ServerArrayList = new ArrayList<>();//An array list of all the servers
     static HashMap<Integer, String> ServerMapReverse = new HashMap<>();//Get's the id from the server's index position
     static String fileName = "serverList.csv";//The file that stores the list of servers and names
-    static CSVReader in;//CSV file reader declaration
     static int count = 0;//Keeps a count everytime a server added
     static boolean importServerList = false;//Allows the program to import data when executed
-    static Connection conn;
 
-    public static void main(String[] Args) throws LoginException, IOException, CsvValidationException {
-        //String jdbcUrl = "jdbc:sqlite:/C:\\Users\\Sparky Fnay\\Desktop\\DisBot - Copy\\servers.db";
-
-        //try {
-        //    conn = DriverManager.getConnection(jdbcUrl);
-        //} catch (SQLException e) {
-        //    e.printStackTrace();
-        //}
-
+    public static void main(String[] Args) throws LoginException{
         jda = JDABuilder.createDefault("Nzk5MTA4MjM2MzI1MTU4OTQy.X_-xig.gO6R0Ph6kieh7WAIkhI9I14i_EQ")
                 .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
                 .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
@@ -61,37 +55,32 @@ public class Main extends ListenerAdapter{
       4: gender*/
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-       /* if (!importServerList){//if server is not imported, import server
+        if (!importServerList){//if server is not imported, import server
+
             try {
                 inputInformationFromDataCSV(event);
-            } catch (IOException | CsvException e) {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
         if (event.getAuthor().isBot()) {//if the message received is a bot, then return;
             return;
         }
-
-       // String sql = "CREATE TABLE IF NOT EXISTS "+event.getGuild().getId()+" (id varchar(20),gayness varchar(3),racistness varchar(3),swearcount varchar(3),gender varchar(100), penissize  varchar(100) )";
-
-        //Statement statement = null;
-        //try {
-        //    statement = conn.createStatement();
-        //    statement.executeQuery(sql);
-        //} catch (SQLException throwables) {
-        //    throwables.printStackTrace();
-        //}
-        if (!ServerMap.containsKey(event.getGuild().getId())){
+        if (!ServerMap.containsKey(event.getGuild().getId())){//checks of the server of the message is already in the list
             try {
-                newServer(event);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (CsvValidationException e) {
+                newServer(event);//if not, then add the server
+                System.out.println("HGAEFADAWDAWDAWD");
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
-         
-        getServer(event).onMessageReceived(event);//Forwards the message to the correct server obj to be processed
+        try {
+            getServer(event).onMessageReceived(event);//Forwards the message to the correct server obj to be processed
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -100,10 +89,40 @@ public class Main extends ListenerAdapter{
     }
 
 
+    public static void inputInformationFromDataCSV(MessageReceivedEvent event) throws IOException, InterruptedException {
+        //reads the data from an .csv file when the program is executed
+        String responseBody = "";
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(URLAddress+"login/servers/"))
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            responseBody = response.body();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        JSONObject obj = new JSONObject(responseBody);
+        JSONArray array = obj.getJSONArray("data");
+
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject entry = array.getJSONObject(i);
+            String id = entry.getString("server_id");
+            String name = entry.getString("Name");
+            ServerMap.put(id, i);
+            ServerMapReverse.put(i, id);
+            ServerArrayList.add(new Server(id, jda));
+        }
+        importServerList = true;
+    }
 
 
+    public static void newServer(MessageReceivedEvent event) throws IOException, InterruptedException {
+        String payload="{\"server_id\":\""+ event.getGuild().getId()+"\",\"Name\":\""+event.getGuild().getName()+"\"}";
+        String requestUrl=URLAddress+"login/servers/";
 
-    public static void newServer(MessageReceivedEvent event) throws IOException, CsvValidationException {
+
         ServerMap.put(event.getGuild().getId(), count);
 
         ServerMapReverse.put(count, event.getGuild().getId());
@@ -111,8 +130,34 @@ public class Main extends ListenerAdapter{
         ServerArrayList.add(new Server(event.getGuild().getId(), jda));
 
 
-        count++;
     }
 
+    public static String sendPostRequest(String requestUrl, String payload) {
+        try {
+            URL url = new URL(requestUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+            writer.write(payload);
+            writer.close();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuffer jsonString = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null) {
+                jsonString.append(line);
+            }
+            br.close();
+            connection.disconnect();
+            return jsonString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
 
 }

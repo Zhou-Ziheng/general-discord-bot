@@ -1,55 +1,43 @@
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import music.GuildMusicManager;
 import music.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.managers.AudioManager;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.*;
+import java.net.*;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.*;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.concurrent.BlockingQueue;
 
 public class Server {
     public JDA jda;
-    public HashMap<String, Integer> userInfoMap = new HashMap<>();
-    public ArrayList<UserInfo> userInfoArrayList = new ArrayList<>();
-    public HashMap<Integer, String> userInfoMapReverse = new HashMap<>();
+    public HashMap<String, UserInfo> userInfoMap = new HashMap<>();
     public String fileName;
-    public CSVReader in;
     public Guild guild;
     public AudioManager manager;
-    private int count = 0;
-    private String command = "~";
+    private final String command = "~";
     public Color[] colors = new Color[]{Color.magenta, Color.black, Color.red, Color.pink, Color.cyan, Color.gray, Color.green, Color.lightGray, Color.yellow, Color.orange, Color.white, Color.blue};
-    public Server(String id, JDA jda) throws IOException, CsvValidationException {
+    public Server(String id, JDA jda) throws IOException, InterruptedException {
         fileName = System.getProperty("user.dir")+ File.separator + "ServerData" + File.separator + id+".csv";
         this.jda = jda;
         guild = jda.getGuildById(id);
         manager = guild.getAudioManager();
         System.out.println("``"+guild+"``");
         File file = new File(fileName);
+        System.out.println("``"+fileName+"``");
         file.createNewFile();
-        inputInformationFromDataCSV();
+        inputInformationFromDataCSV(id);
         List<Member> members = guild.getMembers();
         for (int i = 0; i <members.size(); i ++){
             if (members.get(i).getUser().isBot()) {
@@ -57,7 +45,7 @@ public class Server {
             }
             if (!userInfoMap.containsKey(members.get(i).getId())){
                 try {
-                    newUser(members.get(i).getId());
+                    newUser(members.get(i).getId(), id);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -65,7 +53,7 @@ public class Server {
         }
     }
     public HashMap<Member, Hangman> hangmanHashMap = new HashMap<>();
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(MessageReceivedEvent event) throws IOException {
 
         if (event.getAuthor().isBot()) {
             return;
@@ -73,7 +61,7 @@ public class Server {
 
         if (!userInfoMap.containsKey(event.getAuthor().getId())){
             try {
-                newUser(event.getAuthor().getId());
+                newUser(event.getAuthor().getId(), event.getGuild().getId());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,7 +91,6 @@ public class Server {
         }
         if (msg.contains(command+"help")){
             event.getChannel().sendMessage("define \nhangman \nracistness \ngayness \nswearcount \ngender \ngender set `String`\n" +
-                    //command+"set penis size `String` `String` \n!penis size \n" +
                     "profile").queue();
         }
         if (msg.contains(command+"racistness")||RacistChecker.checkForRacism(msg)){
@@ -125,9 +112,6 @@ public class Server {
         if (msg.contains(command+"profile")) {
             handleProfile(event);
         }
-        //if (msg.contains(command+"")&&(msg.charAt(0)!='!')&&event.getMessage().getMentionedMembers().size()==0){
-        //    handleCheer(event);
-        //}
         handleEmotes(msg, event);
         if (msg.contains(command+"p ")){
             handlePlayMusic(msg, event);
@@ -243,9 +227,10 @@ public class Server {
     }
 
     public void handleRacist(String msg, MessageReceivedEvent event){
+        String id = event.getAuthor().getId();
         if (msg.contains(command)&& msg.contains("racistness")){
             if (event.getMessage().getMentionedUsers().size() == 0){
-                event.getChannel().sendMessage("Your current racistness is: " + getUserInfo(event).getRacistness()).queue();
+                event.getChannel().sendMessage("Your current racistness is: " + userInfoMap.get(id).getRacistness()).queue();
             }else{
                 String mentionedUserId = event.getMessage().getMentionedUsers().get(0).getId();
                 try {
@@ -253,16 +238,12 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                UserInfo user = userInfoArrayList.get(userInfoMap.get(mentionedUserId));
+                UserInfo user = userInfoMap.get(mentionedUserId);
                 event.getChannel().sendMessage("<@"+mentionedUserId+"> has a racistness of "+ user.getRacistness()).queue();
             }
         }
         else if(RacistChecker.checkForRacism(msg)){
-            try {
-                updateRacistness(1, event);
-            } catch (IOException | CsvException e) {
-                e.printStackTrace();
-            }
+            updateRacistness(1, event);
         }
     }
 
@@ -279,10 +260,11 @@ public class Server {
     }
 
     public void handleGayness(String msg, MessageReceivedEvent event){
+        String id = event.getAuthor().getId();
         if (msg.contains(command)&& msg.contains("gayness")) {
             System.out.println(event.getMessage().getMentionedUsers().size());
             if (event.getMessage().getMentionedUsers().size() == 0){
-                event.getChannel().sendMessage("Your current gayness is: " + getUserInfo(event).getGayness()).queue();
+                event.getChannel().sendMessage("Your current gayness is: " + userInfoMap.get(id).getGayness()).queue();
             }else{
                 String mentionedUserId = event.getMessage().getMentionedUsers().get(0).getId();
                 try {
@@ -290,23 +272,20 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                UserInfo user = userInfoArrayList.get(userInfoMap.get(mentionedUserId));
+                UserInfo user = userInfoMap.get(mentionedUserId);
                 event.getChannel().sendMessage("<@" + mentionedUserId + "> has a gayness of " + user.getGayness()).queue();
             }
         }else if (GayChecker.checkForGayness(msg)) {
             event.getMessage().addReaction("\uD83C\uDFF3️\u200D\uD83C\uDF08").queue();
-            try {
-                updateGayness(1, event);
-            } catch (IOException | CsvException e) {
-                e.printStackTrace();
-            }
+            updateGayness(1, event);
         }
     }
 
     public void handleSwearWord(String msg, MessageReceivedEvent event){
+        String id = event.getAuthor().getId();
         if (msg.contains(command)&& msg.replace(" ", "").contains("swearcount")) {
             if (event.getMessage().getMentionedUsers().size() == 0){
-                event.getChannel().sendMessage("Your current swear count is: " + getUserInfo(event).getSwearCount()).queue();
+                event.getChannel().sendMessage("Your current swear count is: " + userInfoMap.get(id).getSwearCount()).queue();
             }else{
                 String mentionedUserId = event.getMessage().getMentionedUsers().get(0).getId();
                 try {
@@ -314,29 +293,25 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                UserInfo user = userInfoArrayList.get(userInfoMap.get(mentionedUserId));
+                UserInfo user = userInfoMap.get(mentionedUserId);
                 event.getChannel().sendMessage("<@"+mentionedUserId+"> has a swear count of "+ user.getSwearCount()).queue();
             }
         }else if (SwearWordChecker.checkForSwearWord(msg)!= 0) {
-            try {
-                updateSwearCount(SwearWordChecker.checkForSwearWord(msg), event);
-            } catch (IOException | CsvException e) {
-                e.printStackTrace();
-            }
+            updateSwearCount(SwearWordChecker.checkForSwearWord(msg), event);
+
         }
     }
 
     public void handleGender(String msg, MessageReceivedEvent event){
+        String id = event.getAuthor().getId();
         if (msg.toLowerCase().contains(command+"gender set")) {
-            try {
-                updateGender(msg.substring(12), event);
-                event.getChannel().sendMessage("Your gender is now " + getUserInfo(event).getGender()).queue();
-            } catch (IOException | CsvException e) {
-                e.printStackTrace();
-            }
+
+            updateGender(msg.substring(12), event);
+            event.getChannel().sendMessage("Your gender is now " + userInfoMap.get(id).getGender()).queue();
+
         }else if(msg.contains(command+"gender")){
             if (event.getMessage().getMentionedUsers().size() == 0){
-                event.getChannel().sendMessage("Your gender is " + getUserInfo(event).getGender()).queue();
+                event.getChannel().sendMessage("Your gender is " + userInfoMap.get(id).getGender()).queue();
             }else{
                 String mentionedUserId = event.getMessage().getMentionedUsers().get(0).getId();
                 try {
@@ -344,23 +319,23 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                UserInfo user = userInfoArrayList.get(userInfoMap.get(mentionedUserId));
+                UserInfo user = userInfoMap.get(mentionedUserId);
                 event.getChannel().sendMessage("Gender of <@"+mentionedUserId+"> : "+ user.getGender()).queue();
             }
         }
     }
 
     public void handlePenisSize(String msg, MessageReceivedEvent event){
+        String id = event.getAuthor().getId();
         if (msg.toLowerCase().contains(command+"penis set")) {
-            try {
-                updatePenisSize(msg.substring(11), event);
-                event.getChannel().sendMessage("Your penis size is(length, diameter): (" + getUserInfo(event).getPenisSize()[0]+", "+getUserInfo(event).getPenisSize()[1]+")").queue();
-            } catch (IOException | CsvException e) {
-                e.printStackTrace();
-            }
+
+            updatePenisSize(msg.substring(11), event);
+            event.getChannel().sendMessage("Your penis size is(length, diameter): (" +
+                    userInfoMap.get(id).getPenisSize()[0]+", "+userInfoMap.get(id).getPenisSize()[1]+")").queue();
+
         }else if(msg.contains(command+"penis")){
             if (event.getMessage().getMentionedUsers().size() == 0){
-                event.getChannel().sendMessage("Your penis size is(length, diameter): (" + getUserInfo(event).getPenisSize()[0]+", "+getUserInfo(event).getPenisSize()[1]+")").queue();
+                event.getChannel().sendMessage("Your penis size is(length, diameter): (" + userInfoMap.get(id).getPenisSize()[0]+", "+userInfoMap.get(id).getPenisSize()[1]+")").queue();
             }else{
                 String mentionedUserId = event.getMessage().getMentionedUsers().get(0).getId();
                 try {
@@ -368,35 +343,26 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                UserInfo user = userInfoArrayList.get(userInfoMap.get(mentionedUserId));
+                UserInfo user = userInfoMap.get(mentionedUserId);
                 event.getChannel().sendMessage("Penis size of <@"+mentionedUserId+"> is(length, diameter): (" + user.getPenisSize()[0]+", "+user.getPenisSize()[1]+")").queue();
             }
         }
     }
 
     public void handleProfile(MessageReceivedEvent event){
-        if (event.getMessage().getContentRaw().contains("all")){
-            for (int i = 0; i < userInfoArrayList.size(); i++){
-                String mentionedUserId = userInfoMapReverse.get(i);
-                UserInfo user = userInfoArrayList.get(userInfoMap.get(mentionedUserId));
-                event.getChannel().sendMessage(user.getProfile()).queue();
+        if (event.getMessage().getMentionedUsers().size() == 0) {
+            event.getChannel().sendMessage(userInfoMap.get(event.getAuthor().getId()).getProfile()).queue();
+        } else {
+            String mentionedUserId = event.getMessage().getMentionedUsers().get(0).getId();
+            try {
+                validateUser(mentionedUserId);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            UserInfo user = userInfoMap.get(mentionedUserId);
+            event.getChannel().sendMessage(user.getProfile()).queue();
+        }
 
-        }
-        else {
-            if (event.getMessage().getMentionedUsers().size() == 0) {
-                event.getChannel().sendMessage(getUserInfo(event).getProfile()).queue();
-            } else {
-                String mentionedUserId = event.getMessage().getMentionedUsers().get(0).getId();
-                try {
-                    validateUser(mentionedUserId);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                UserInfo user = userInfoArrayList.get(userInfoMap.get(mentionedUserId));
-                event.getChannel().sendMessage(user.getProfile()).queue();
-            }
-        }
 
     }
 
@@ -483,102 +449,77 @@ public class Server {
         event.getChannel().sendMessage(eb.build()).queue();
     }
 
-    public UserInfo getUserInfo(MessageReceivedEvent event){
-        return userInfoArrayList.get(userInfoMap.get(event.getAuthor().getId()));
-    }
 
-    public void updateRacistness(int  change, MessageReceivedEvent event) throws IOException, CsvException {
-        int row = userInfoMap.get(event.getAuthor().getId());
-        UserInfo user =  getUserInfo(event);
+    public void updateRacistness(int  change, MessageReceivedEvent event){
+        UserInfo user = userInfoMap.get(event.getAuthor().getId());
         user.setRacistness(user.getRacistness()+change);
-
-        CSVReader reader = new CSVReader(new FileReader(fileName));
-        List<String[]> csvBody = reader.readAll();
-        csvBody.get(row)[2]=String.valueOf(user.getRacistness());
-        reader.close();
-
-        CSVWriter writer = new CSVWriter(new FileWriter(fileName));
-        writer.writeAll(csvBody);
-        writer.flush();
-        writer.close();
+        updateField(event);
     }
 
-    public void updateGayness(int  change, MessageReceivedEvent event) throws IOException, CsvException {
-        int row = userInfoMap.get(event.getAuthor().getId());
-        UserInfo user =  getUserInfo(event);
+    public void updateGayness(int  change, MessageReceivedEvent event) {
+        UserInfo user = userInfoMap.get(event.getAuthor().getId());
         user.setGayness(user.getGayness()+change);
-
-        CSVReader reader = new CSVReader(new FileReader(fileName));
-        List<String[]> csvBody = reader.readAll();
-        csvBody.get(row)[1]=String.valueOf(user.getGayness());
-        reader.close();
-
-        CSVWriter writer = new CSVWriter(new FileWriter(fileName));
-        writer.writeAll(csvBody);
-        writer.flush();
-        writer.close();
+        updateField(event);
     }
 
-    public void updateGender(String change, MessageReceivedEvent event) throws IOException, CsvException {
-        int row = userInfoMap.get(event.getAuthor().getId());
-        UserInfo user =  getUserInfo(event);
+    public void updateGender(String change, MessageReceivedEvent event) {
+        UserInfo user = userInfoMap.get(event.getAuthor().getId());
         user.setGender(change);
-
-        CSVReader reader = new CSVReader(new FileReader(fileName));
-        List<String[]> csvBody = reader.readAll();
-        csvBody.get(row)[4]=change;
-        reader.close();
-
-        CSVWriter writer = new CSVWriter(new FileWriter(fileName));
-        writer.writeAll(csvBody);
-        writer.flush();
-        writer.close();
+        updateField(event);
     }
 
-    public void updatePenisSize(String change, MessageReceivedEvent event) throws IOException, CsvException {
-        int row = userInfoMap.get(event.getAuthor().getId());
-        UserInfo user =  getUserInfo(event);
+    public void updatePenisSize(String change, MessageReceivedEvent event) {
+        UserInfo user = userInfoMap.get(event.getAuthor().getId());
         user.setPenisSize(change.split(" "));
-
-        CSVReader reader = new CSVReader(new FileReader(fileName));
-        List<String[]> csvBody = reader.readAll();
-        csvBody.get(row)[5]=change.replace(" ", ":");
-        reader.close();
-
-        CSVWriter writer = new CSVWriter(new FileWriter(fileName));
-        writer.writeAll(csvBody);
-        writer.flush();
-        writer.close();
+        updateField(event);
     }
 
-    public void updateSwearCount(int  change, MessageReceivedEvent event) throws IOException, CsvException {
-        int row = userInfoMap.get(event.getAuthor().getId());
-        UserInfo user =  getUserInfo(event);
+    public void updateSwearCount(int change, MessageReceivedEvent event) {
+        UserInfo user = userInfoMap.get(event.getAuthor().getId());
         user.setSwearCount(user.getSwearCount()+change);
-
-        CSVReader reader = new CSVReader(new FileReader(fileName));
-        List<String[]> csvBody = reader.readAll();
-        csvBody.get(row)[3]=String.valueOf(user.getSwearCount());
-        reader.close();
-
-        CSVWriter writer = new CSVWriter(new FileWriter(fileName));
-        writer.writeAll(csvBody);
-        writer.flush();
-        writer.close();
+        updateField(event);
     }
 
-    public void inputInformationFromDataCSV() throws CsvValidationException, IOException {
-        in = new CSVReader(new FileReader(fileName));
-        String [] data = in.readNext();
-        while (data!=null){
-            userInfoMap.put(data[0], count);
-            userInfoMapReverse.put(count, data[0]);
-            String[] temp5 = data[5].split(":");
-            userInfoArrayList.add(new UserInfo(jda.retrieveUserById(data[0]).complete(), Integer.parseInt(data[1]),Integer.parseInt(data[2]), Integer.parseInt(data[3]), data[4],new String[]{temp5[0], temp5[1]}));
-            data = in.readNext();
-            count++;
+    public void updateField(MessageReceivedEvent event) {
+        String server_id =  event.getGuild().getId();
+        String user_id =  event.getAuthor().getId();
+        String url = Main.URLAddress+"login/servers/"+server_id+"/users/"+user_id;
+        UserInfo user = userInfoMap.get(user_id);
+        String payload="{\"user_id\":\""+user_id+"\",\"gayness\":\""+user.getGayness()+"\",\"racistness\":\""+user.getRacistness()
+                +"\",\"swear_count\":\""+user.getSwearCount()+"\",\"gender\":\""+user.getGender()+"\"," +
+                "\"penis_size\":\""+user.getPenisSize()[0]+":"+user.getPenisSize()[1]+"\"}";
+        Server.sendRequest(url,payload, "PUT");
+        System.out.println(Server.sendRequest(url, payload, "PUT"));
+
+    }
+    public void inputInformationFromDataCSV(String server_id) {
+        System.out.println(server_id);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(Main.URLAddress+"login/servers/"+server_id+"/"))
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
-        in.close();
+        assert response != null;
+        String responseBody = response.body();
+        System.out.println("gdsrgsvdugdshrulivndsrvg");
+        System.out.println(responseBody);
+        JSONObject obj = new JSONObject(responseBody);
+        JSONArray array = obj.getJSONArray("data");
+
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject user = array.getJSONObject(i);
+            String user_id = user.getString("user_id");
+            String[] temp5 = user.getString("penis_size").split(":");
+            userInfoMap.put(user_id, new UserInfo(jda.retrieveUserById(user_id).complete(), Integer.parseInt(user.getString("gayness")),
+                    Integer.parseInt(user.getString("racistness")),Integer.parseInt(user.getString("swear_count")),
+                    user.getString("gender"),new String[]{temp5[0], temp5[1]}));
+        }
     }
 
     public void validateUser(String id) throws IOException {
@@ -588,34 +529,48 @@ public class Server {
     }
 
     public void newUserByMention(String id) throws IOException {
-        userInfoMap.put(id, count);
-        userInfoMapReverse.put(count, id);
-        userInfoArrayList.add(new UserInfo(jda.retrieveUserById(id).complete(),0,0, 0, "unidentified", new String[]{"0","0"}));
-
-        CSVWriter writer = new CSVWriter(new FileWriter(fileName, true));
-
-        String [] record = (id+","+0+","+0+","+0+","+"unidentified"+","+"0:0"+","+0+","+0+","+0+","+0+","+0+","+0+","+0).split(",");
-
-        writer.writeNext(record);
-
-        writer.close();
-        count++;
+        newUser(id, guild.getId());
     }
 
-    public void newUser(String id) throws IOException {
-        userInfoMap.put(id, count);
-        userInfoMapReverse.put(count, id);
-        userInfoArrayList.add(new UserInfo(jda.retrieveUserById(id).complete(),0,0, 0, "unidentified", new String[]{"0","0"}));
-        CSVWriter writer = new CSVWriter(new FileWriter(fileName, true));
+    public void newUser(String id, String server_id) throws IOException {
+        userInfoMap.put(id, new UserInfo(jda.retrieveUserById(id).complete(),0,0, 0, "unidentified", new String[]{"0","0"}));
+        //userInfoMapReverse.put(count, id);
+        //userInfoArrayList.add(new UserInfo(jda.retrieveUserById(id).complete(),0,0, 0, "unidentified", new String[]{"0","0"}));
 
-        String [] record = (id+","+0+","+0+","+0+","+"unidentified"+","+"0:0"+","+0+","+0+","+0+","+0+","+0+","+0+","+0).split(",");
+        System.out.println("asdfaaaaaaaaaaaaaaaaaaaaa");
+        String payload="{\"user_id\":\""+id+"\",\"gayness\":\"0\",\"racistness\":\"0\",\"swear_count\":\"0\",\"gender\":\"unidentified\",\"penis_size\":\"0:0\"}";
+        String requestUrl=Main.URLAddress+"login/servers/" + server_id + "/users";
 
-        writer.writeNext(record);
 
-        writer.close();
-        count++;
+        System.out.println(sendRequest(requestUrl, payload, "POST"));
     }
+    public static String sendRequest(String requestUrl, String payload, String type) {
+        try {
+            URL url = new URL(requestUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setRequestMethod(type);
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+            writer.write(payload);
+            writer.close();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuffer jsonString = new StringBuffer();
+            String line;
+            while ((line = br.readLine()) != null) {
+                jsonString.append(line);
+            }
+            br.close();
+            connection.disconnect();
+            return jsonString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
     public String getGuildId() {
         return guild.getId();
     }
