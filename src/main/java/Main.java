@@ -82,7 +82,7 @@ public class Main extends ListenerAdapter{
         }
 
     }
-    public static void getServer(){
+    public static void getasdr(){
         System.out.println("Treov");
     }
 
