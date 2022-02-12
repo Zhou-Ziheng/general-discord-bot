@@ -33,10 +33,6 @@ public class Server {
         this.jda = jda;
         guild = jda.getGuildById(id);
         manager = guild.getAudioManager();
-        System.out.println("``"+guild+"``");
-        File file = new File(fileName);
-        System.out.println("``"+fileName+"``");
-        file.createNewFile();
         inputInformationFromDataCSV(id);
         List<Member> members = guild.getMembers();
         for (int i = 0; i <members.size(); i ++){

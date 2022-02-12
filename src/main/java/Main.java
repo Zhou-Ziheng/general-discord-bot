@@ -28,9 +28,7 @@ import javax.security.auth.login.LoginException;
 public class Main extends ListenerAdapter{
     static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
     static JDA jda; //global variable jda
-    static HashMap<String, Integer> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
-    static ArrayList<Server> ServerArrayList = new ArrayList<>();//An array list of all the servers
-    static HashMap<Integer, String> ServerMapReverse = new HashMap<>();//Get's the id from the server's index position
+    static HashMap<String, Server> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
     static String fileName = "serverList.csv";//The file that stores the list of servers and names
     static int count = 0;//Keeps a count everytime a server added
     static boolean importServerList = false;//Allows the program to import data when executed
@@ -85,7 +83,7 @@ public class Main extends ListenerAdapter{
     }
 
     public static Server getServer(MessageReceivedEvent event){
-        return ServerArrayList.get(ServerMap.get(event.getGuild().getId()));//Returns a server obj from guild id
+        return ServerMap.get(event.getGuild().getId());//Returns a server obj from guild id
     }
 
 
@@ -110,9 +108,7 @@ public class Main extends ListenerAdapter{
             JSONObject entry = array.getJSONObject(i);
             String id = entry.getString("server_id");
             String name = entry.getString("Name");
-            ServerMap.put(id, i);
-            ServerMapReverse.put(i, id);
-            ServerArrayList.add(new Server(id, jda));
+            ServerMap.put(id, new Server(id, jda));
         }
         importServerList = true;
     }
@@ -123,11 +119,7 @@ public class Main extends ListenerAdapter{
         String requestUrl=URLAddress+"login/servers/";
 
 
-        ServerMap.put(event.getGuild().getId(), count);
-
-        ServerMapReverse.put(count, event.getGuild().getId());
-
-        ServerArrayList.add(new Server(event.getGuild().getId(), jda));
+        ServerMap.put(event.getGuild().getId(), new Server(event.getGuild().getId(), jda));
 
 
     }
