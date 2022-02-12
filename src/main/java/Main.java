@@ -82,6 +82,9 @@ public class Main extends ListenerAdapter{
         }
 
     }
+    public static void getServer(){
+        System.out.println("Treov");
+    }
 
     public static Server getServer(MessageReceivedEvent event){
         return ServerMap.get(event.getGuild().getId());//Returns a server obj from guild id
