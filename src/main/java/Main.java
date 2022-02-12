@@ -27,6 +27,7 @@ import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter{
     static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
+    //static String URLAddress = "http://127.0.0.1:8000/";
     static JDA jda; //global variable jda
     static HashMap<String, Server> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
     static String fileName = "serverList.csv";//The file that stores the list of servers and names
@@ -117,38 +118,10 @@ public class Main extends ListenerAdapter{
     public static void newServer(MessageReceivedEvent event) throws IOException, InterruptedException {
         String payload="{\"server_id\":\""+ event.getGuild().getId()+"\",\"Name\":\""+event.getGuild().getName()+"\"}";
         String requestUrl=URLAddress+"login/servers/";
-
+        Requests.sendPostRequest(requestUrl, payload);
 
         ServerMap.put(event.getGuild().getId(), new Server(event.getGuild().getId(), jda));
 
-
-    }
-
-    public static String sendPostRequest(String requestUrl, String payload) {
-        try {
-            URL url = new URL(requestUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-            writer.write(payload);
-            writer.close();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuffer jsonString = new StringBuffer();
-            String line;
-            while ((line = br.readLine()) != null) {
-                jsonString.append(line);
-            }
-            br.close();
-            connection.disconnect();
-            return jsonString.toString();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
 
     }
 

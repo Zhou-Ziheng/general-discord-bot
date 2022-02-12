@@ -32,6 +32,7 @@ public class Server {
         fileName = System.getProperty("user.dir")+ File.separator + "ServerData" + File.separator + id+".csv";
         this.jda = jda;
         guild = jda.getGuildById(id);
+        assert guild != null;
         manager = guild.getAudioManager();
         inputInformationFromDataCSV(id);
         List<Member> members = guild.getMembers();
@@ -484,24 +485,12 @@ public class Server {
         String payload="{\"user_id\":\""+user_id+"\",\"gayness\":\""+user.getGayness()+"\",\"racistness\":\""+user.getRacistness()
                 +"\",\"swear_count\":\""+user.getSwearCount()+"\",\"gender\":\""+user.getGender()+"\"," +
                 "\"penis_size\":\""+user.getPenisSize()[0]+":"+user.getPenisSize()[1]+"\"}";
-        Server.sendRequest(url,payload, "PUT");
-        System.out.println(Server.sendRequest(url, payload, "PUT"));
+        Requests.sendPutRequest(url,payload);
 
     }
     public void inputInformationFromDataCSV(String server_id) {
         System.out.println(server_id);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(Main.URLAddress+"login/servers/"+server_id+"/"))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        HttpResponse<String> response = null;
-        try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        assert response != null;
+        HttpResponse<String> response = Requests.sendGetRequest(Main.URLAddress+"login/servers/"+server_id+"/");
         String responseBody = response.body();
         System.out.println("gdsrgsvdugdshrulivndsrvg");
         System.out.println(responseBody);
@@ -538,37 +527,8 @@ public class Server {
         String requestUrl=Main.URLAddress+"login/servers/" + server_id + "/users";
 
 
-        System.out.println(sendRequest(requestUrl, payload, "POST"));
+        Requests.sendPostRequest(requestUrl, payload);
     }
-    public static String sendRequest(String requestUrl, String payload, String type) {
-        try {
-            URL url = new URL(requestUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setRequestMethod(type);
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-            writer.write(payload);
-            writer.close();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuffer jsonString = new StringBuffer();
-            String line;
-            while ((line = br.readLine()) != null) {
-                jsonString.append(line);
-            }
-            br.close();
-            connection.disconnect();
-            return jsonString.toString();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-    }
-    public String getGuildId() {
-        return guild.getId();
-    }
 
 }

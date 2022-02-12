@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class SwearWordChecker {
     private static ArrayList<String> swearWords = new ArrayList<>(Arrays.asList(

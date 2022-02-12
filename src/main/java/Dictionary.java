@@ -10,20 +10,12 @@ import java.util.ArrayList;
 
 class Dictionary{
     public static ArrayList<String> getDefinition(String word) throws IOException, InterruptedException {
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://api.urbandictionary.com/v0/define?term="+word.replaceAll(" ", "%20")))
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
-            return(parse(responseBody));
+        String url = "https://api.urbandictionary.com/v0/define?term="+word.replaceAll(" ", "%20");
 
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
+        HttpResponse<String> response = Requests.sendGetRequest(url);
+        return(parse(response.body()));
     }
+
     public static ArrayList<String> parse(String responseBody){
         JSONObject obj = new JSONObject(responseBody);
         JSONArray definitionArray = obj.getJSONArray("list");
