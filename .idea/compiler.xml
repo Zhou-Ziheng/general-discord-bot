@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DisBot - Copy" />
+        <module name="DisBot1" />
         <module name="DisBot" />
       </profile>
     </annotationProcessing>
