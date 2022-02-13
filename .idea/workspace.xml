@@ -10,28 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd6a4178-d86f-45ab-937f-403ba0b73e5c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/DisBot1.eml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/DisBot1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/DisBot1_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Dictionary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/GayChecker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Hangman.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/RacistChecker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Requests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Server.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SwearWordChecker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Test.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/music/AudioPlayerSendHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/music/GuildMusicManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/music/PlayerManager$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/music/PlayerManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/music/TrackScheduler.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
