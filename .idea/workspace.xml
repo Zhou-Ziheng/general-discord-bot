@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="DisBot - Copy:jar" />
+      <artifact name="DisBot1:jar" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
@@ -10,11 +10,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd6a4178-d86f-45ab-937f-403ba0b73e5c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/DisBot1.eml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/DisBot1.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/DisBot1_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Dictionary.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/GayChecker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Hangman.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/RacistChecker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Requests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Server.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/SwearWordChecker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Test.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/music/AudioPlayerSendHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/music/GuildMusicManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/music/PlayerManager$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/music/PlayerManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/music/TrackScheduler.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,10 +68,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="build.tools" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -94,10 +111,14 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="414" y="170" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1644702377897" />
-    <state x="689" y="305" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1644702346190">
+    <state x="689" y="305" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1644722578580">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="689" y="305" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1644702346190" />
+    <state x="689" y="305" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1644722578580" />
+    <state x="740" y="270" key="FileChooserDialogImpl" timestamp="1644721797944">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="740" y="270" key="FileChooserDialogImpl/0.0.1920.1032@0.0.1920.1032" timestamp="1644721797944" />
     <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1644710005758">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
@@ -114,10 +135,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1644710005758" />
-    <state x="440" y="93" key="SettingsEditor" timestamp="1644703610855">
+    <state x="440" y="93" key="SettingsEditor" timestamp="1644723194355">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="440" y="93" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1644703610855" />
+    <state x="440" y="93" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1644723194355" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
