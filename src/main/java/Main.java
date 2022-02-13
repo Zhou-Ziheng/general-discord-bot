@@ -25,8 +25,8 @@ import java.util.*;
 import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter{
-   // static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
-    static String URLAddress = "http://127.0.0.1:8000/";
+    static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
+    //static String URLAddress = "http://127.0.0.1:8000/";
     static JDA jda; //global variable jda
     static HashMap<String, Server> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
     static int count = 0;//Keeps a count everytime a server added
