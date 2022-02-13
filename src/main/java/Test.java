@@ -19,5 +19,23 @@ import java.util.List;
 
 public class Test{
     public static void main(String[] args) throws IOException, InterruptedException {
+        try {
+            HttpClient client = HttpClient.newBuilder().build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://127.0.0.1:8000/login/servers/delete/942510084527890482/"))
+                    //.uri(URI.create(Main.URLAddress+"login/servers/delete/942143366005669998/"))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Token 735eee31ab2dc4cbe6ad7047153d1fececa0d33d")
+                    .DELETE()
+                    .build();
+            HttpResponse<?> response = client.send(request, HttpResponse.BodyHandlers.discarding());
+            System.out.println(response.statusCode());
+            System.out.println(response.body());
+            //HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+
+        }catch(Exception e){
+            e.printStackTrace();
+            //return null;
+        }
     }
 }

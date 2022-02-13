@@ -25,11 +25,10 @@ import java.util.*;
 import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter{
-    static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
-    //static String URLAddress = "http://127.0.0.1:8000/";
+   // static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
+    static String URLAddress = "http://127.0.0.1:8000/";
     static JDA jda; //global variable jda
     static HashMap<String, Server> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
-    static String fileName = "serverList.csv";//The file that stores the list of servers and names
     static int count = 0;//Keeps a count everytime a server added
     static boolean importServerList = false;//Allows the program to import data when executed
 
@@ -111,7 +110,13 @@ public class Main extends ListenerAdapter{
             JSONObject entry = array.getJSONObject(i);
             String id = entry.getString("server_id");
             String name = entry.getString("Name");
-            ServerMap.put(id, new Server(id, jda));
+            try {
+                ServerMap.put(id, new Server(id, jda));
+            }catch(Exception e){
+                System.out.println("here");
+                String requestUrl=URLAddress+"login/servers/delete/"+id+"/";
+                Requests.sendDeleteRequest(requestUrl);
+            }
         }
         importServerList = true;
     }
