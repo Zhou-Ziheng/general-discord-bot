@@ -10,37 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd6a4178-d86f-45ab-937f-403ba0b73e5c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT-jar-with-dependencies.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT-jar-with-dependencies.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/JDA-4.3.0_277.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/annotations-16.0.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/base64-2.3.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/commons-codec-1.11.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/commons-collections4-4.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/commons-io-2.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/commons-logging-1.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/httpclient-4.5.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/httpcore-4.4.12.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/jackson-annotations-2.10.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/jackson-core-2.10.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/jackson-databind-2.10.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/jna-4.4.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/json-20210307.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/jsoup-1.12.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/jsr305-3.0.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/lava-common-1.1.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/lavaplayer-1.3.77.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/lavaplayer-natives-1.3.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/nv-websocket-client-2.14.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/okhttp-3.13.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/okio-1.17.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/opus-java-1.1.0.pom" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/opus-java-api-1.1.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/opus-java-natives-1.1.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/slf4j-api-1.7.25.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/dependency/trove4j-3.0.3.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
