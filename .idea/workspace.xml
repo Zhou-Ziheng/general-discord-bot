@@ -10,9 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd6a4178-d86f-45ab-937f-403ba0b73e5c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/music/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/music/PlayerManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,9 +86,9 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Application.Test" />
       <item itemvalue="Application.Main (1)" />
       <item itemvalue="Application.Test (1)" />
+      <item itemvalue="Application.Test" />
     </list>
     <recent_temporary>
       <list>
@@ -120,36 +126,29 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="740" y="270" key="FileChooserDialogImpl/0.0.1920.1032@0.0.1920.1032" timestamp="1644721797944" />
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1644787474674">
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1646364184953">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1644787474674" />
-    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1644787474674">
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
+    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1646364184953">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1644787474674" />
-    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1644787474674">
+    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
+    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1646364184953">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1644787474674" />
-    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1644787474674">
+    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
+    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1646364184953">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1644787474674" />
+    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
     <state x="440" y="93" key="SettingsEditor" timestamp="1644723194355">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="440" y="93" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1644723194355" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Server.java</url>
-          <line>524</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="623" y="223" width="672" height="678" key="search.everywhere.popup" timestamp="1644908571302">
+      <screen x="0" y="0" width="1920" height="1032" />
+    </state>
+    <state x="623" y="223" width="672" height="678" key="search.everywhere.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1644908571302" />
   </component>
 </project>

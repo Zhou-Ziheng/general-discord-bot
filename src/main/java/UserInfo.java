@@ -2,19 +2,19 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.*;
 public class UserInfo{
     private User user;
-    private int gayness;
-    private int racistness;
-    private int swearCount;
+    private int messageCount;
+    private int interactions;
+    private int twitchAddiction;
     private String gender;
-    private String[] penisSize = new String[2];
+    private String pronouns;
 
-    public UserInfo(User user, int gayness, int racistness, int swearWords, String gender, String[] penisSize){
+    public UserInfo(User user, int messageCount, int interactions, int twitchAddiction, String gender, String pronouns){
         this.user = user;
-        this.gayness = gayness;
-        this.racistness = racistness;
-        this.swearCount = swearWords;
+        this.messageCount = messageCount;
+        this.interactions = interactions;
+        this.twitchAddiction = twitchAddiction;
         this.gender = gender;
-        this.penisSize = penisSize;
+        this.pronouns = pronouns;
     }
 
     public String getGender() {
@@ -25,28 +25,28 @@ public class UserInfo{
         this.gender = gender;
     }
 
-    public int getSwearCount() {
-        return swearCount;
+    public int getTwitchAddiction() {
+        return twitchAddiction;
     }
 
-    public void setSwearCount(int swearCount) {
-        this.swearCount = swearCount;
+    public void setTwitchAddiction(int twitchAddiction) {
+        this.twitchAddiction = twitchAddiction;
     }
 
-    public int getGayness() {
-        return gayness;
+    public int getMessageCount() {
+        return messageCount;
     }
 
-    public void setGayness(int gayness) {
-        this.gayness = gayness;
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
     }
 
-    public int getRacistness() {
-        return racistness;
+    public int getInteractions() {
+        return interactions;
     }
 
-    public void setRacistness(int racistness) {
-        this.racistness = racistness;
+    public void setInteractions(int interactions) {
+        this.interactions = interactions;
     }
 
     public User getUser() {
@@ -57,15 +57,15 @@ public class UserInfo{
         this.user = user;
     }
 
-    public String[] getPenisSize() {
-        return penisSize;
+    public String getPronouns() {
+        return pronouns;
     }
 
-    public void setPenisSize(String[] penisSize) {
-        this.penisSize = penisSize;
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
     }
 
     public String getProfile(){
-        return ("<@"+user.getId()+">'s profile\n```User Name: "+user.getName()+"\nGender: "+ gender + "\nGayness: "+gayness+"\nRacistness: "+racistness+"\nSwear Count: "+swearCount+"```\n");
+        return ("<@"+user.getId()+">'s profile\n```User Name: "+user.getName()+"\nGender: "+ gender + "\nTotal Messages: "+messageCount+"\nInterations: "+interactions+"\nTwitch Words: "+twitchAddiction+"```\n");
     }
 }

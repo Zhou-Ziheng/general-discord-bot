@@ -25,7 +25,7 @@ import java.util.*;
 import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter{
-    static String URLAddress = "https://thisisamazingdamn.herokuapp.com/";
+    static String URLAddress = "https://my-discord-bot-data.herokuapp.com/";
     //static String URLAddress = "http://127.0.0.1:8000/";
     static JDA jda; //global variable jda
     static HashMap<String, Server> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
@@ -33,7 +33,7 @@ public class Main extends ListenerAdapter{
     static boolean importServerList = false;//Allows the program to import data when executed
 
     public static void main(String[] Args) throws LoginException{
-        jda = JDABuilder.createDefault("Nzk5MTA4MjM2MzI1MTU4OTQy.X_-xig.gO6R0Ph6kieh7WAIkhI9I14i_EQ")
+        jda = JDABuilder.createDefault("Nzk5MTA4MjM2MzI1MTU4OTQy.X_-xig.kqRtHxnJB6R2CvKPh5iTgGJeRX0")
                 .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
                 .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
                 .enableIntents(GatewayIntent.GUILD_MEMBERS).build();//Builds JDA
@@ -45,11 +45,6 @@ public class Main extends ListenerAdapter{
 
 
     }
-    /*0: UserID
-      1: gayness
-      2: racistness
-      3: swearcount
-      4: gender*/
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
         if (!importServerList){//if server is not imported, import server
@@ -114,8 +109,8 @@ public class Main extends ListenerAdapter{
                 ServerMap.put(id, new Server(id, jda));
             }catch(Exception e){
                 System.out.println("here");
-                String requestUrl=URLAddress+"login/servers/delete/"+id+"/";
-                Requests.sendDeleteRequest(requestUrl);
+                //String requestUrl=URLAddress+"login/servers/delete/"+id+"/";
+                //Requests.sendDeleteRequest(requestUrl);
             }
         }
         importServerList = true;

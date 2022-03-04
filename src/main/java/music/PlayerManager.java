@@ -38,18 +38,24 @@ public class PlayerManager {
             } );
         }
 
-        public void loadAndPlay(TextChannel channel, String trackUrl){
+        public void loadAndPlay(TextChannel channel, String trackUrl, Boolean guess){
             GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
             this.audioPlayerManager.loadItemOrdered(musicManager, trackUrl.replaceAll(" ", ""), new AudioLoadResultHandler() {
                 @Override
                 public void trackLoaded(AudioTrack track) {
                     musicManager.scheduler.queue(track);
-                    channel.sendMessage("Adding to queue: `")
-                            .append(track.getInfo().title)
-                            .append("` by `")
-                            .append(track.getInfo().author)
-                            .append("`")
-                            .queue();
+
+                    System.out.println("sadfasdfsgdfgsdfg");
+                    System.out.println(guess);
+                    if (!guess) {
+
+                        channel.sendMessage("Adding to queue: `")
+                                .append(track.getInfo().title)
+                                .append("` by `")
+                                .append(track.getInfo().author)
+                                .append("`")
+                                .queue();
+                    }
                 }
 
                 @Override
@@ -58,12 +64,15 @@ public class PlayerManager {
 
                     musicManager.scheduler.queue(tracks.get(0));
 
-                    channel.sendMessage("Adding to queue: `")
-                            .append(tracks.get(0).getInfo().title)
-                            .append("` by `")
-                            .append(tracks.get(0).getInfo().author)
-                            .append("`")
-                            .queue();
+                    if (!guess) {
+
+                        channel.sendMessage("Adding to queue: `")
+                                .append(tracks.get(0).getInfo().title)
+                                .append("` by `")
+                                .append(tracks.get(0).getInfo().author)
+                                .append("`")
+                                .queue();
+                    }
                 }
 
                 @Override

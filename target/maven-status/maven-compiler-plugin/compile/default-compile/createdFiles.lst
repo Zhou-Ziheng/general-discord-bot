@@ -1,10 +1,12 @@
 Dictionary.class
+ListOfSongs.class
 RacistChecker.class
 Test.class
 music\TrackScheduler.class
 Hangman.class
 Main.class
 Requests.class
+GuessingGame.class
 music\AudioPlayerSendHandler.class
 UserInfo.class
 Server.class
