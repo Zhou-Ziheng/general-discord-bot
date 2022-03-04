@@ -33,7 +33,7 @@ public class Main extends ListenerAdapter{
     static boolean importServerList = false;//Allows the program to import data when executed
 
     public static void main(String[] Args) throws LoginException{
-        jda = JDABuilder.createDefault("Nzk5MTA4MjM2MzI1MTU4OTQy.X_-xig.kqRtHxnJB6R2CvKPh5iTgGJeRX0")
+        jda = JDABuilder.createDefault("")
                 .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
                 .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
                 .enableIntents(GatewayIntent.GUILD_MEMBERS).build();//Builds JDA
