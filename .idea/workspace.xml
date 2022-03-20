@@ -13,8 +13,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/music/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/music/PlayerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SwearWordChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TwitchEmoteChecker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
@@ -55,7 +54,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
@@ -126,26 +125,26 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state x="740" y="270" key="FileChooserDialogImpl/0.0.1920.1032@0.0.1920.1032" timestamp="1644721797944" />
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1646364184953">
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1646427733228">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
-    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1646364184953">
+    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1646427733228" />
+    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1646427733228">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
-    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1646364184953">
+    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1646427733228" />
+    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1646427733228">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
-    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1646364184953">
+    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1646427733228" />
+    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1646427733228">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1646364184953" />
-    <state x="440" y="93" key="SettingsEditor" timestamp="1644723194355">
+    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1646427733228" />
+    <state x="440" y="93" key="SettingsEditor" timestamp="1646375581514">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="440" y="93" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1644723194355" />
+    <state x="440" y="93" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1646375581514" />
     <state x="623" y="223" width="672" height="678" key="search.everywhere.popup" timestamp="1644908571302">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>

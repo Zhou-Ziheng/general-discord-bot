@@ -23,7 +23,6 @@ import java.util.concurrent.BlockingQueue;
 public class Server {
     public JDA jda;
     public HashMap<String, UserInfo> userInfoMap = new HashMap<>();
-    public String fileName;
     public Guild guild;
     public AudioManager manager;
     public GuessingGame gg;
@@ -53,9 +52,12 @@ public class Server {
                     new String[]{"`stop guess`", "Stops generating random songs to guess"}};
 
     static final String command = "!";
-    public Color[] colors = new Color[]{Color.magenta, Color.black, Color.red, Color.pink, Color.cyan, Color.gray, Color.green, Color.lightGray, Color.yellow, Color.orange, Color.white, Color.blue};
-    public Server(String id, JDA jda) throws IOException, InterruptedException {
-        fileName = System.getProperty("user.dir")+ File.separator + "ServerData" + File.separator + id+".csv";
+    public Color[] colors = new Color[]{Color.magenta, Color.black, Color.red, Color.pink, Color.cyan, Color.gray,
+            Color.green, Color.lightGray, Color.yellow, Color.orange, Color.white, Color.blue};
+
+    public HashMap<Member, Hangman> hangmanHashMap = new HashMap<>();
+    
+    public Server(String id, JDA jda) {
         this.jda = jda;
         guild = jda.getGuildById(id);
         assert guild != null;
@@ -63,17 +65,19 @@ public class Server {
         manager = guild.getAudioManager();
         inputInformationFromDataCSV(id);
         List<Member> members = guild.getMembers();
-        for (int i = 0; i <members.size(); i ++){
-            if (members.get(i).getUser().isBot()) {
+        for (int i = 0; i <members.size(); i++) {
+            Member member = members.get(i);
+
+            if (member.getUser().isBot()) {
                 continue;
             }
-            if (!userInfoMap.containsKey(members.get(i).getId())){
+            if (!userInfoMap.containsKey(member.getId())){
                 newUser(members.get(i).getId(), id);
             }
         }
     }
-    public HashMap<Member, Hangman> hangmanHashMap = new HashMap<>();
-    public void onMessageReceived(MessageReceivedEvent event) throws IOException {
+
+    public void onMessageReceived(MessageReceivedEvent event) {
 
         if (event.getAuthor().isBot()) {
             return;
@@ -156,6 +160,11 @@ public class Server {
             updateInteractions(1, event);
             System.out.println("here");
             handleMessageCount(msg, event);
+        }
+        int temp = TwitchEmoteChecker.checkForTwitchEmote(msg);
+        if (temp > 0){
+            updateTwitchAddiction(temp, event);
+            handleTwitchAddiction(msg, event);
         }
         if (msg.toLowerCase().contains(command+"twitchaddiction")){
             updateInteractions(1, event);
@@ -352,8 +361,6 @@ public class Server {
                 UserInfo user = userInfoMap.get(mentionedUserId);
                 event.getChannel().sendMessage("<@"+mentionedUserId+"> has  said twitch emotes "+ user.getTwitchAddiction() + " times.").queue();
             }
-        }else if (msg.contains("pog")) {
-            updateTwitchAddiction(1, event);
         }
     }
 

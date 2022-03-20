@@ -27,13 +27,13 @@ import javax.security.auth.login.LoginException;
 public class Main extends ListenerAdapter{
     static String URLAddress = "https://my-discord-bot-data.herokuapp.com/";
     //static String URLAddress = "http://127.0.0.1:8000/";
-    static JDA jda; //global variable jda
-    static HashMap<String, Server> ServerMap = new HashMap<>();//gets the index of a certain element aka the row number in files from id
-    static int count = 0;//Keeps a count everytime a server added
-    static boolean importServerList = false;//Allows the program to import data when executed
 
-    public static void main(String[] Args) throws LoginException{
-        jda = JDABuilder.createDefault("")
+    static JDA jda;
+    static HashMap<String, Server> ServerMap = new HashMap<>();
+    static boolean importServerList = false; //Forces the program to import data when executed
+
+    public static void main(String[] Args) throws LoginException {
+        jda = JDABuilder.createDefault("Nzk5MTA4MjM2MzI1MTU4OTQy.X_-xig.B_gllu8d0VV1VLBlXkvNQg_w9PI")
                 .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
                 .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
                 .enableIntents(GatewayIntent.GUILD_MEMBERS).build();//Builds JDA
@@ -47,36 +47,20 @@ public class Main extends ListenerAdapter{
     }
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        if (!importServerList){//if server is not imported, import server
-
-            try {
-                inputInformationFromDataCSV(event);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (!importServerList) {//if server is not imported, import server
+            inputInformationFromDataCSV();
+            importServerList = true;
         }
+
         if (event.getAuthor().isBot()) {//if the message received is a bot, then return;
             return;
         }
-        if (!ServerMap.containsKey(event.getGuild().getId())){//checks of the server of the message is already in the list
-            try {
-                newServer(event);//if not, then add the server
-                System.out.println("HGAEFADAWDAWDAWD");
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            getServer(event).onMessageReceived(event);//Forwards the message to the correct server obj to be processed
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
-    public static void getasdr(){
-        System.out.println("Treov");
+        if (!ServerMap.containsKey(event.getGuild().getId())) {//if this is a new server
+                newServer(event); //add the server
+        }
+        getServer(event).onMessageReceived(event);//Forwards the message to the correct server obj to be processed
+
     }
 
     public static Server getServer(MessageReceivedEvent event){
@@ -84,7 +68,7 @@ public class Main extends ListenerAdapter{
     }
 
 
-    public static void inputInformationFromDataCSV(MessageReceivedEvent event) throws IOException, InterruptedException {
+    public static void inputInformationFromDataCSV() {
         //reads the data from an .csv file when the program is executed
         String responseBody = "";
         try {
@@ -98,6 +82,7 @@ public class Main extends ListenerAdapter{
         }catch(Exception e){
             e.printStackTrace();
         }
+
         JSONObject obj = new JSONObject(responseBody);
         JSONArray array = obj.getJSONArray("data");
 
@@ -108,18 +93,15 @@ public class Main extends ListenerAdapter{
             try {
                 ServerMap.put(id, new Server(id, jda));
             }catch(Exception e){
-                System.out.println("here");
-                //String requestUrl=URLAddress+"login/servers/delete/"+id+"/";
-                //Requests.sendDeleteRequest(requestUrl);
+                e.printStackTrace();
             }
         }
         importServerList = true;
     }
 
-
-    public static void newServer(MessageReceivedEvent event) throws IOException, InterruptedException {
-        String payload="{\"server_id\":\""+ event.getGuild().getId()+"\",\"Name\":\""+event.getGuild().getName()+"\"}";
-        String requestUrl=URLAddress+"login/servers/";
+    public static void newServer(MessageReceivedEvent event){
+        String payload = "{\"server_id\":\""+ event.getGuild().getId()+"\",\"Name\":\""+event.getGuild().getName()+"\"}";
+        String requestUrl = URLAddress + "login/servers/";
         Requests.sendPostRequest(requestUrl, payload);
 
         ServerMap.put(event.getGuild().getId(), new Server(event.getGuild().getId(), jda));
