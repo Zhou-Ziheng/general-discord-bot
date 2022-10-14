@@ -2,7 +2,19 @@ import java.util.ArrayList;
 
 public class Hangman {
     private String gameState;
-    private String[] wordBank= new String[]{"osteoporosis", "shakespeare", "photosynthesis", "tea", "trevor", "green", "diet", "linear", "electron", "goat", "armor"};
+    private String[] wordBank= new String[]{"osteoporosis", "shakespeare", "photosynthesis", "tea", "trevor", "green",
+            "diet", "linear", "electron", "goat", "armor",
+    "characterization", "diagonal", "diagonalization", "preach", "span", "derivative", "module", "eigenvalue",
+    "track", "player", "note", "untimely", "keyboard", "algebra", "learn", "rank", "form", "reduced", "induction", "unique",
+    "matrix", "vector", "square", "elementary", "dot", "product", "scalar", "coordinate", "subspace", "base", "basis",
+    "column", "row", "dependent", "reflection", "transformation", "arithmetic", "contradiction", "perpendicular",
+    "algebraic", "field", "ring", "squeeze", "sequence", "series", "criterion", "lemma", "theorem", "computer", "club",
+    "wheel", "word", "guess", "private", "index", "count", "next", "state", "home", "work", "piazza", "integral", "variable",
+    "constant", "trigonometry", "identity", "evaluate", "finite", "infinite", "inverse", "antiderivative", "substitution",
+    "elimination", "expression", "consider", "part", "apply", "remark", "might", "you", "example", "class", "suit",
+    "that", "equivalent", "every", "for", "particular", "assume", "enough", "show", "geometric", "ratio", "root", "converge",
+    "numeric"};
+
     private String currentWord;
     private int guessCount;
     private String stringToReturn = "";

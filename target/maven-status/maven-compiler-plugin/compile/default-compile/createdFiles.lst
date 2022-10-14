@@ -8,8 +8,8 @@ Requests.class
 GuessingGame.class
 music\AudioPlayerSendHandler.class
 UserInfo.class
+TwitchEmoteChecker.class
 Server.class
 music\PlayerManager$1.class
-SwearWordChecker.class
 music\PlayerManager.class
 music\GuildMusicManager.class
