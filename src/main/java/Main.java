@@ -4,13 +4,13 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -25,7 +25,7 @@ import java.util.*;
 import javax.security.auth.login.LoginException;
 
 public class Main extends ListenerAdapter{
-    static String URLAddress = "https://my-discord-bot-data.herokuapp.com/";
+    static String URLAddress = "http://143.244.203.14:8000/";
     //static String URLAddress = "http://127.0.0.1:8000/";
 
     static JDA jda;
@@ -102,6 +102,7 @@ public class Main extends ListenerAdapter{
     public static void newServer(MessageReceivedEvent event){
         String payload = "{\"server_id\":\""+ event.getGuild().getId()+"\",\"Name\":\""+event.getGuild().getName()+"\"}";
         String requestUrl = URLAddress + "login/servers/";
+        System.out.println(payload);
         Requests.sendPostRequest(requestUrl, payload);
 
         ServerMap.put(event.getGuild().getId(), new Server(event.getGuild().getId(), jda));

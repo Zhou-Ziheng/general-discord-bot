@@ -5,13 +5,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Requests {
+    static String token = "63630bec6dfceb0895251422b0d2ce32401165f1";
     public static void sendPutRequest(String requestUrl, String payload) {
         try {
             HttpClient client = HttpClient.newBuilder().build();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(requestUrl))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Token 735eee31ab2dc4cbe6ad7047153d1fececa0d33d")
+                    .header("Authorization", "Token " + token)
                     .PUT(HttpRequest.BodyPublishers.ofString(payload))
                     .build();
             HttpResponse<?> response = client.send(request, HttpResponse.BodyHandlers.discarding());
@@ -29,7 +30,7 @@ public class Requests {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(requestUrl))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Token 735eee31ab2dc4cbe6ad7047153d1fececa0d33d")
+                    .header("Authorization", "Token " + token)
                     .DELETE()
                     .build();
             HttpResponse<?> response = client.send(request, HttpResponse.BodyHandlers.discarding());
@@ -48,7 +49,7 @@ public class Requests {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(requestUrl))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Token 735eee31ab2dc4cbe6ad7047153d1fececa0d33d")
+                    .header("Authorization", "Token " + token)
                     .POST(HttpRequest.BodyPublishers.ofString(payload))
                     .build();
             HttpResponse<?> response = client.send(request, HttpResponse.BodyHandlers.discarding());

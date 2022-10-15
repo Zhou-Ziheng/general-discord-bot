@@ -10,15 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd6a4178-d86f-45ab-937f-403ba0b73e5c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/DisBot1.eml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DisBot1.eml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/DisBot1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DisBot1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Hangman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Hangman.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/DisBot-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Requests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Requests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,8 +60,10 @@
 }]]></component>
   <component name="RunManager" selected="Application.Main (1)">
     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="13" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="DisBot" />
+      <module name="DisBot1" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -109,7 +106,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623429893343</updated>
-      <workItem from="1665721814868" duration="823000" />
+      <workItem from="1665721814868" duration="10232000" />
     </task>
     <servers />
   </component>
@@ -126,27 +123,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="WindowStateProjectService">
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1663392532721">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1032/1920.-1200.2560.1392@0.0.1920.1032" timestamp="1663392532721" />
-    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1663392532720">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.center/0.0.1920.1032/1920.-1200.2560.1392@0.0.1920.1032" timestamp="1663392532720" />
-    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1663392532720">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.left/0.0.1920.1032/1920.-1200.2560.1392@0.0.1920.1032" timestamp="1663392532720" />
-    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1663392532720">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.right/0.0.1920.1032/1920.-1200.2560.1392@0.0.1920.1032" timestamp="1663392532720" />
-    <state x="623" y="223" width="672" height="678" key="search.everywhere.popup" timestamp="1663648055909">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="623" y="223" width="672" height="678" key="search.everywhere.popup/0.0.1920.1032/1920.-1200.2560.1392@0.0.1920.1032" timestamp="1663648055909" />
   </component>
 </project>
