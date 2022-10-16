@@ -12,7 +12,6 @@
     <list default="true" id="cd6a4178-d86f-45ab-937f-403ba0b73e5c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +106,7 @@
       <option name="presentableId" value="Default" />
       <updated>1623429893343</updated>
       <workItem from="1665721814868" duration="11362000" />
-      <workItem from="1665900986863" duration="488000" />
+      <workItem from="1665900986863" duration="818000" />
     </task>
     <servers />
   </component>
